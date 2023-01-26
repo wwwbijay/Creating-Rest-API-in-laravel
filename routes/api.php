@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostsController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,29 +20,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/posts', function(){
-    return Post::all();
-});
+Route::get('/posts', [PostsController::class, 'index'] );
 
-Route::post('/posts',function(){
+Route::post('/posts',[PostsController::class, 'create']);
 
-    request()->validate([
-        'title' => 'required',
-        'content'=>'required'
-    ]);
+Route::put('/posts/{post}',[PostsController::class, 'update']);
 
-    return Post::create([
-        'title'=> request('title'),
-        'content'=> request('content'),
-    ]);
-});
-
-Route::put('/posts/{post}',function(Post $post){
-    
-    request()->validate([
-        'title' => 'required',
-        'content'=>'required'
-    ]);
-
-    
-});
+Route::delete('/posts/{post}',[PostsController::class, 'delete']);
